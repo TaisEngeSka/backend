@@ -18,7 +18,7 @@ app.get("/efetuarLogin", (requisicao, resposta) => {
 
   return resposta.status(200).json(user);
 });
- 
+
 app.get("/ListaUsers", (req, res) => {
   return res.status(200).json(usuario);
 });
@@ -26,26 +26,30 @@ app.get("/ListaUsers", (req, res) => {
 // DELETE OU GET
 app.get("/istaUsers/:codigo", (req, res) => {
   const codigo = req.params.codigo;
-  return res.status(200).json({mensagem: "VOCÊ DIGITOU " + codigo});
+  return res.status(200).json({ mensagem: "VOCÊ DIGITOU " + codigo });
 });
 
 app.get("/Exercicio/:codigo", (req, res) => {
   const codigo = req.params.codigo;
 
-  if (codigo == null || codigo == ""){
-      return res.status(200).json(usuario);
-  } 
-  
-  for {
-    return res.status(200).json(usuario[codigo - 1]);
+  if (codigo == null || codigo == "") {
+    return res.status(200).json(usuario);
   }
-});
+
+  let encontrei;
+  for ( let buscar of usuario ) {
+    if(buscar.codigo == Number(codigo)) { encontrei = buscar }
+}
+    return res.status(200).json(encontrei);
+
+}
+);
 
 app.get("/exercicio/:codigo", (req, res) => {
   const codigo = req.params.codigo;
 
-  if (codigo == null || codigo == ""){
-      return res.status(200).json(usuario);
+  if (codigo == null || codigo == "") {
+    return res.status(200).json(usuario);
   } else {
     return res.status(200).json(usuario[codigo - 1]);
   }
