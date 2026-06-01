@@ -45,15 +45,7 @@ app.get("/Exercicio/:codigo", (req, res) => {
 }
 );
 
-app.get("/exercicio/:codigo", (req, res) => {
-  const codigo = req.params.codigo;
 
-  if (codigo == null || codigo == "") {
-    return res.status(200).json(usuario);
-  } else {
-    return res.status(200).json(usuario[codigo - 1]);
-  }
-});
 
 app.get("/", (req, res) => {
   res.send("Servidor Node.js com TypeScript funcionando!");
