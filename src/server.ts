@@ -43,6 +43,16 @@ app.post("/efetuarLogin", (req, res) => {
     return res.status(401).json({ mensagem: "Credenciais inválidas!" });
 });
 
+app.post("/efetuarCadastro", (req, res) => {
+  const { email, senhaUser, ConfirmaSenha, nomeUser, foneContato } = req.body;
+
+    if (senha === senhaUser){
+      return res.status(200).json({ mensagem: "Cadastro realizado com sucesso!" });
+    }
+
+    return res.status(401).json({ mensagem: "senhas não coincidem!" });
+});
+
 // DELETE OU GET
 app.get("/istaUsers/:codigo", (req, res) => {
   const codigo = req.params.codigo;
