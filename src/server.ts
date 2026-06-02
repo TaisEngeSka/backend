@@ -46,7 +46,7 @@ app.post("/efetuarLogin", (req, res) => {
 app.post("/efetuarCadastro", (req, res) => {
   const { email, senhaUser, ConfirmaSenha, nomeUser, foneContato } = req.body;
 
-    if (senha === senhaUser){
+    if (ConfirmaSenha === senhaUser){
       return res.status(200).json({ mensagem: "Cadastro realizado com sucesso!" });
     }
 
