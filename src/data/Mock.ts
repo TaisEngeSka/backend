@@ -15,3 +15,6 @@ export const usuario = [
     senha: "senha789" }
 ];
 
+export const senha = "password";
+export const user = "username";
+

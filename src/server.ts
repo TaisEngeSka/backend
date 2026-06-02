@@ -1,8 +1,17 @@
 import express from "express";
-import { usuario } from "./data/Mock";
+import { senha, user, usuario } from "./data/Mock";
+import cors from "cors";
 
 const app = express();
 const PORT = 3000;
+
+app.use(cors({
+  origin: "http://localhost:5173",   // seu frontend Vite
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}))
+
+app.use(express.json()) 
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
@@ -21,6 +30,17 @@ app.get("/efetuarLogin", (requisicao, resposta) => {
 
 app.get("/ListaUsers", (req, res) => {
   return res.status(200).json(usuario);
+});
+
+// POST
+app.post("/efetuarLogin", (req, res) => {
+  const { nomeUser, senhaUser } = req.body;
+
+    if (user === nomeUser && senha === senhaUser){
+      return res.status(200).json({ mensagem: "Login bem-sucedido!" });
+    }
+
+    return res.status(401).json({ mensagem: "Credenciais inválidas!" });
 });
 
 // DELETE OU GET
