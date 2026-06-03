@@ -12,7 +12,8 @@ export const usuario = [
     { codigo: 3, 
     nomeUsuario: "Pedro", 
     email: "pedro@example.com", 
-    senha: "senha789" }
+    senha: "senha789" },
+    
 ];
 
 export const senha = "password";

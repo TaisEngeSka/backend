@@ -1,6 +1,9 @@
 import express from "express";
 import { senha, user, usuario } from "./data/Mock";
 import cors from "cors";
+import { LoginInterface } from "./interfaces/Login";
+import { CadastroInterface } from "./interfaces/Cadastro";
+import { RespostaServidorInterface } from "./interfaces/Retorno";
 
 const app = express();
 const PORT = 3000;
@@ -19,18 +22,23 @@ app.listen(PORT, () => {
 
 // POST
 app.post("/efetuarLogin", (req, res) => {
-  const { nomeUser, senhaUser } = req.body;
+  const { username, senha }: LoginInterface = req.body;
 
-  if (user === nomeUser && senha === senhaUser) {
-    return res.status(200).json({ mensagem: "Login bem-sucedido!" });
+
+  let resposta: RespostaServidorInterface = { mensagem: "Login bem-sucedido!" }
+  let status = 200;
+
+  if (user != username || senha != senha) {
+    status = 401;
+    resposta.mensagem = "Credenciais inválidas!";
   }
 
-  return res.status(401).json({ mensagem: "Credenciais inválidas!" });
+  return res.status(status).json(resposta);
 });
 
 // POST
 app.post("/efetuarCadastro", (req, res) => {
-  const { email, senhaUser, ConfirmaSenha, nomeUser, foneContato } = req.body;
+  const { email, senha, username, telefone }: CadastroInterface = req.body;
 
   // Validar e-mail
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -44,16 +52,9 @@ app.post("/efetuarCadastro", (req, res) => {
   // Validar senha
   const senhaValida = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-  if (!senhaValida.test(senhaUser)) {
+  if (!senhaValida.test(senha)) {
     return res.status(400).json({
       mensagem: "A senha deve ter no mínimo 8 caracteres, uma letra e um número."
-    });
-  }
-
-  // Confirmar senha
-  if (ConfirmaSenha !== senhaUser) {
-    return res.status(400).json({
-      mensagem: "As senhas não coincidem!"
     });
   }
 
