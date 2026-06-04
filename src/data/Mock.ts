@@ -16,6 +16,6 @@ export const usuario = [
     
 ];
 
-export const senha = "password";
+export const senhaSalva = "password";
 export const user = "username";
 

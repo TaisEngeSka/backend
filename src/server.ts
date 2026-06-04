@@ -1,9 +1,9 @@
 import express from "express";
-import { senha, user, usuario } from "./data/Mock";
+import {senhaSalva, user} from "./data/Mock";
 import cors from "cors";
 import { LoginInterface } from "./interfaces/Login";
 import { CadastroInterface } from "./interfaces/Cadastro";
-import { RespostaServidorInterface } from "./interfaces/Retorno";
+import { Response } from "express";
 
 const app = express();
 const PORT = 3000;
@@ -20,20 +20,21 @@ app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
 
+function respostaServidor(res: Response, mensagem: string, status: number) {
+  return res.status(status).json({
+    mensagem: mensagem
+  });
+}
+
 // POST
 app.post("/efetuarLogin", (req, res) => {
   const { username, senha }: LoginInterface = req.body;
 
+  if (user != username || senhaSalva != senha) {
+    return respostaServidor(res, "Credenciais inválidas!", 401);
+    }
 
-  let resposta: RespostaServidorInterface = { mensagem: "Login bem-sucedido!" }
-  let status = 200;
-
-  if (user != username || senha != senha) {
-    status = 401;
-    resposta.mensagem = "Credenciais inválidas!";
-  }
-
-  return res.status(status).json(resposta);
+  return respostaServidor(res, "Login bem-sucedido!", 200);
 });
 
 // POST
@@ -44,23 +45,17 @@ app.post("/efetuarCadastro", (req, res) => {
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailValido.test(email)) {
-    return res.status(400).json({
-      mensagem: "E-mail inválido!"
-    });
+      return respostaServidor (res, "E-mail inválido!", 400);
   }
 
   // Validar senha
   const senhaValida = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
   if (!senhaValida.test(senha)) {
-    return res.status(400).json({
-      mensagem: "A senha deve ter no mínimo 8 caracteres, uma letra e um número."
-    });
+    return respostaServidor(res, "A senha deve ter no mínimo 8 caracteres, uma letra e um número.", 400);
   }
 
-  return res.status(200).json({
-    mensagem: "Cadastro realizado com sucesso!"
-  });
+  return respostaServidor(res, "Cadastro realizado com sucesso!", 200);
 });
 
 app.get("/", (req, res) => {
