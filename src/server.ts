@@ -1,9 +1,10 @@
 import express from "express";
-import {senhaSalva, user} from "./data/Mock";
+import { senhaSalva, user, usuario } from "./data/Mock";
 import cors from "cors";
 import { LoginInterface } from "./interfaces/Login";
 import { CadastroInterface } from "./interfaces/Cadastro";
 import { Response } from "express";
+import { EsqueciSenhaInterface } from "./interfaces/EsqueciSenha";
 
 const app = express();
 const PORT = 3000;
@@ -20,7 +21,7 @@ app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
 
-function respostaServidor(res: Response, mensagem: string, status: number) {
+function respostaServidor(res: Response, mensagem: any, status: number) {
   return res.status(status).json({
     mensagem: mensagem
   });
@@ -32,9 +33,22 @@ app.post("/efetuarLogin", (req, res) => {
 
   if (user != username || senhaSalva != senha) {
     return respostaServidor(res, "Credenciais inválidas!", 401);
-    }
+  }
 
   return respostaServidor(res, "Login bem-sucedido!", 200);
+});
+
+app.get("/esqueciSenha", (req, res) => {
+  const { email, codigoVer }: EsqueciSenhaInterface = req.body;
+
+  let encontreiSenha = false;
+  for (let i of usuario) {
+    if (i.email === email && i.codigo == codigoVer) {
+      encontreiSenha = true;
+    }
+  }
+
+  respostaServidor(res, encontreiSenha, 200);
 });
 
 // POST
@@ -45,7 +59,7 @@ app.post("/efetuarCadastro", (req, res) => {
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailValido.test(email)) {
-      return respostaServidor (res, "E-mail inválido!", 400);
+    return respostaServidor(res, "E-mail inválido!", 400);
   }
 
   // Validar senha
