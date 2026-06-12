@@ -5,6 +5,7 @@ import { LoginInterface } from "./interfaces/Login";
 import { CadastroInterface } from "./interfaces/Cadastro";
 import { Response } from "express";
 import { EsqueciSenhaInterface } from "./interfaces/EsqueciSenha";
+import router from "./routes/AuthRoute";
 
 const app = express();
 const PORT = 3000;
@@ -15,11 +16,21 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }))
 
-app.use(express.json())
+app.use(express.json());
+app.use("autenticacao", router);
+
+
+// front 
+// ANTES Service ("efetuarLogin")
+//AGORA Service ("autenticacao/efetuarLogin")
+//EX Service ("produto/efetuarLogin")
+//EX Service ("Produto/cadastro")
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
+
+
 
 function respostaServidor(res: Response, mensagem: any, status: number) {
   return res.status(status).json({
@@ -75,3 +86,4 @@ app.post("/efetuarCadastro", (req, res) => {
 app.get("/", (req, res) => {
   res.send("Servidor Node.js com TypeScript funcionando!");
 });
+
