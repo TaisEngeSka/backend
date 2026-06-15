@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { LoginInterface } from "../interfaces/Login";
-import { respostaServidor } from "../util/respostaServidor";
 import { AuthService } from "../services/AuthService";
 import { CadastroInterface } from "../interfaces/Cadastro";
+import { respostaServidor } from "../util/RespostaServidor";
 
 export class AuthController {
 
