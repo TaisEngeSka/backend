@@ -19,6 +19,7 @@ export class AuthController {
         }
 
         const respostaDoService = this.authService.login({ username, senha });
+       
         return respostaServidor(res, respostaDoService, 200);
     };
 

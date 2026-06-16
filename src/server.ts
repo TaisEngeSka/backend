@@ -5,7 +5,7 @@ import { LoginInterface } from "./interfaces/Login";
 import { CadastroInterface } from "./interfaces/Cadastro";
 import { Response } from "express";
 import { EsqueciSenhaInterface } from "./interfaces/EsqueciSenha";
-import router from "./routes/AuthRoute";
+import autenticacao from "./routes/AuthRoute";
 
 const app = express();
 const PORT = 3000;
@@ -17,7 +17,7 @@ app.use(cors({
 }))
 
 app.use(express.json());
-app.use("autenticacao", router);
+
 
 
 // front 
@@ -27,10 +27,10 @@ app.use("autenticacao", router);
 //EX Service ("Produto/cadastro")
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando e m http://localhost:${PORT}`);
 });
 
-
+app.use("/autenticacao", autenticacao);
 
 function respostaServidor(res: Response, mensagem: any, status: number) {
   return res.status(status).json({
