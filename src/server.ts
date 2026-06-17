@@ -1,11 +1,12 @@
 import express from "express";
-import { senhaSalva, user, usuario } from "./data/Mock";
+import { cadastros, senhaSalva, user } from "./data/Mock";
 import cors from "cors";
 import { LoginInterface } from "./interfaces/Login";
 import { CadastroInterface } from "./interfaces/Cadastro";
 import { Response } from "express";
 import { EsqueciSenhaInterface } from "./interfaces/EsqueciSenha";
 import autenticacao from "./routes/AuthRoute";
+import ProdutoRoutes from "./routes/PodutoRoutes";
 
 const app = express();
 const PORT = 3000;
@@ -17,20 +18,12 @@ app.use(cors({
 }))
 
 app.use(express.json());
-
-
-
-// front 
-// ANTES Service ("efetuarLogin")
-//AGORA Service ("autenticacao/efetuarLogin")
-//EX Service ("produto/efetuarLogin")
-//EX Service ("Produto/cadastro")
+app.use("/produtos", ProdutoRoutes);
+app.use("/autenticacao", autenticacao);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando e m http://localhost:${PORT}`);
 });
-
-app.use("/autenticacao", autenticacao);
 
 function respostaServidor(res: Response, mensagem: any, status: number) {
   return res.status(status).json({
@@ -38,7 +31,6 @@ function respostaServidor(res: Response, mensagem: any, status: number) {
   });
 }
 
-// POST
 app.post("/efetuarLogin", (req, res) => {
   const { username, senha }: LoginInterface = req.body;
 
@@ -53,7 +45,7 @@ app.get("/esqueciSenha", (req, res) => {
   const { email, codigoVer }: EsqueciSenhaInterface = req.body;
 
   let encontreiSenha = false;
-  for (let i of usuario) {
+  for (let i of cadastros) {
     if (i.email === email && i.codigo == codigoVer) {
       encontreiSenha = true;
     }
@@ -62,7 +54,6 @@ app.get("/esqueciSenha", (req, res) => {
   respostaServidor(res, encontreiSenha, 200);
 });
 
-// POST
 app.post("/efetuarCadastro", (req, res) => {
   const { email, senha, username, telefone }: CadastroInterface = req.body;
 

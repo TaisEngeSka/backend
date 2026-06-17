@@ -1,28 +1,8 @@
 import { CadastroInterface } from "../interfaces/Cadastro";
+import { ProdutosInterface } from "../interfaces/ProdutosInterface";
 
-export const usuario = [
-    {
-        codigo: 1,
-        nomeUsuario: "Alexandre",
-        email: "alexandre@gmail.com",
-        senha: "senha123"
-    },
-
-    {
-        codigo: 2,
-        nomeUsuario: "Maria",
-        email: "maria@gmail.com",
-        senha: "senha456"
-    },
-
-    {
-        codigo: 3,
-        nomeUsuario: "Pedro",
-        email: "pedro@gmail.com",
-        senha: "senha789"
-    },
-
-];
+export const senhaSalva = "password";
+export const user = "username";
 
 export const cadastros : CadastroInterface[] = [
     {
@@ -42,5 +22,25 @@ export const cadastros : CadastroInterface[] = [
         telefone: 11912345678
     }
 ];
-export const senhaSalva = "password";
-export const user = "username";
+export const produtos: ProdutosInterface[] = [
+    {
+        descricao:"ração para cachorro",
+        valor: 15.00,
+    },
+    {
+        descricao: "ração para gato",
+        valor: 15.00,
+    },
+    {
+        descricao:"ração para passarinho",
+        valor: 10.00,
+    },
+    {
+        descricao: "ração para peixe",
+        valor: 15.00,
+    },
+    {
+        descricao: "ASDASDASDASD",
+        valor: 15.00,
+    },
+]
