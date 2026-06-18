@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { respostaServidor } from "../util/RespostaServidor";
-import { ProdutoService } from "../services/ProdutoServoce";
+import { ProdutoService } from "../services/ProdutoService";
 
 const service = new ProdutoService();
 
@@ -9,4 +9,15 @@ export class ProdutoController {
     async buscarProdutos(req: Request, res: Response) {
         return respostaServidor(res, service.buscarProdutos(), 200);
     }
+
+    async buscarProdutosPesquisa(req: Request, res: Response) {
+        const { pesquisa } = req.query; // somente em get ou post 
+
+        if (pesquisa == null || pesquisa == "") {
+            return respostaServidor(res, service.buscarProdutos(), 200);
+        }
+
+        return respostaServidor(res, service.buscarProdutosPesquisa(pesquisa as string), 200);
+    }
+
 }
