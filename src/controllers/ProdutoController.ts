@@ -21,11 +21,11 @@ export class ProdutoController {
         return respostaServidor(res, service.buscarProdutosPesquisa(pesquisa as string), 200);
     }
     async CadastrarProduto(frontend: Request, backend: Response) {
-        const {parametros} = frontend.body;
+        const {descricao, valor} = frontend.body;
 
         const dados : ProdutosInterface = {
-            descricao: String(parametros.descricao),
-            valor: Number(parametros.valor)
+            descricao: String(descricao),
+            valor: Number(valor)
         }
 
         if (dados.descricao == null || dados.descricao == "" || dados.valor == null || dados.valor == 0) {
