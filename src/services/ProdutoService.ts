@@ -1,7 +1,5 @@
 import { produtos } from "../data/Mock";
 import { ProdutosInterface } from "../interfaces/ProdutosInterface";
-import { respostaServidor } from "../util/RespostaServidor";
-
 
 export class ProdutoService {
     buscarProdutos(): ProdutosInterface[] {
@@ -22,5 +20,9 @@ export class ProdutoService {
         }
 
         return [encontreiProduto];
+    }
+
+    cadastrarProduto(parametros: ProdutosInterface) {
+        return produtos.push(parametros);
     }
 }

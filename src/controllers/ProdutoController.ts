@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { respostaServidor } from "../util/RespostaServidor";
 import { ProdutoService } from "../services/ProdutoService";
+import { ProdutosInterface } from "../interfaces/ProdutosInterface";
 
 const service = new ProdutoService();
 
@@ -18,6 +19,20 @@ export class ProdutoController {
         }
 
         return respostaServidor(res, service.buscarProdutosPesquisa(pesquisa as string), 200);
+    }
+    async CadastrarProduto(frontend: Request, backend: Response) {
+        const {parametros} = frontend.body;
+
+        const dados : ProdutosInterface = {
+            descricao: String(parametros.descricao),
+            valor: Number(parametros.valor)
+        }
+
+        if (dados.descricao == null || dados.descricao == "" || dados.valor == null || dados.valor == 0) {
+            return respostaServidor(backend, "Descrição e valor são obrigatórios", 400);
+        }
+
+        return respostaServidor(backend, service.cadastrarProduto(dados), 200);
     }
 
 }
