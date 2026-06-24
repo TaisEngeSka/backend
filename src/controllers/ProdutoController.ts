@@ -9,7 +9,7 @@ export class ProdutoController {
 
     async buscarProdutos(req: Request, res: Response) {
         return respostaServidor(res, service.buscarProdutos(), 200);
-    }
+    };
 
     async buscarProdutosPesquisa(req: Request, res: Response) {
         const { pesquisa } = req.query; // somente em get ou post 
@@ -19,7 +19,8 @@ export class ProdutoController {
         }
 
         return respostaServidor(res, service.buscarProdutosPesquisa(pesquisa as string), 200);
-    }
+    };
+    
     async CadastrarProduto(frontend: Request, backend: Response) {
         const {descricao, valor} = frontend.body;
 
@@ -33,6 +34,6 @@ export class ProdutoController {
         }
 
         return respostaServidor(backend, service.cadastrarProduto(dados), 200);
-    }
+    };
 
 }

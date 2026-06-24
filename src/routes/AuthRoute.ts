@@ -11,4 +11,9 @@ router.post("/efetuarLogin", (req, res) =>
 router.post("/efetuarCadastro", (req, res) =>
     authController.cadastro(req, res)
 );
+
+router.post("/esqueciSenhaPassoI", (req, res) =>
+    authController.esqueciSenhaPassoI(req, res)
+);
+
 export default router;

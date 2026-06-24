@@ -3,6 +3,7 @@ import { LoginInterface } from "../interfaces/Login";
 import { AuthService } from "../services/AuthService";
 import { CadastroInterface } from "../interfaces/Cadastro";
 import { respostaServidor } from "../util/RespostaServidor";
+import { EsqueciSenhaInterface } from "../interfaces/EsqueciSenha";
 
 export class AuthController {
 
@@ -19,7 +20,7 @@ export class AuthController {
         }
 
         const respostaDoService = this.authService.login({ username, senha });
-       
+
         return respostaServidor(res, respostaDoService, 200);
     };
 
@@ -69,6 +70,20 @@ export class AuthController {
         }
 
         return respostaServidor(res, "Cadastro realizado com sucesso!", 200);
+    };
+
+    async esqueciSenhaPassoI(req: Request, res: Response) {
+        const { email}: EsqueciSenhaInterface = req.body;
+        if (email == null || email == "") {
+            return respostaServidor(res, "Credenciais inválidas!", 401);
+        } else {
+            // Validar e-mail
+        const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailValido.test(email)) {
+            return respostaServidor(res, "E-mail inválido!", 400);
+        }
+        }
     }
 
 }
