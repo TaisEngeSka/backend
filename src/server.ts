@@ -1,6 +1,12 @@
 import express from "express";
-import { senha, user, usuario } from "./data/Mock";
+import { cadastros, senhaSalva, user } from "./data/Mock";
 import cors from "cors";
+import { LoginInterface } from "./interfaces/Login";
+import { CadastroInterface } from "./interfaces/Cadastro";
+import { Response } from "express";
+import { EsqueciSenhaInterface } from "./interfaces/EsqueciSenha";
+import autenticacao from "./routes/AuthRoute";
+import ProdutoRoutes from "./routes/PodutoRoutes";
 
 const app = express();
 const PORT = 3000;
@@ -11,96 +17,64 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }))
 
-app.use(express.json())
+app.use(express.json());
+app.use("/produtos", ProdutoRoutes);
+app.use("/autenticacao", autenticacao);
 
 app.listen(PORT, () => {
-  console.log(`Servidor rodando em http://localhost:${PORT}`);
+  console.log(`Servidor rodando e m http://localhost:${PORT}`);
 });
 
-app.get("/efetuarLogin", (requisicao, resposta) => {
-  const user = {
-    idade: 17,
-    nome: "Taís",
-    sobrenome: "Santos",
-    cpf: "123.456.789-00",
-  };
+function respostaServidor(res: Response, mensagem: any, status: number) {
+  return res.status(status).json({
+    mensagem: mensagem
+  });
+}
 
-  return resposta.status(200).json(user);
-});
-
-app.get("/ListaUsers", (req, res) => {
-  return res.status(200).json(usuario);
-});
-
-// POST
 app.post("/efetuarLogin", (req, res) => {
-  const { nomeUser, senhaUser } = req.body;
+  const { username, senha }: LoginInterface = req.body;
 
-  if (user === nomeUser && senha === senhaUser) {
-    return res.status(200).json({ mensagem: "Login bem-sucedido!" });
+  if (user != username || senhaSalva != senha) {
+    return respostaServidor(res, "Credenciais inválidas!", 401);
   }
 
-  return res.status(401).json({ mensagem: "Credenciais inválidas!" });
+  return respostaServidor(res, "Login bem-sucedido!", 200);
 });
 
-// POST
+app.get("/esqueciSenha", (req, res) => {
+  const { email, codigoVer }: EsqueciSenhaInterface = req.body;
+
+  let encontreiSenha = false;
+  for (let i of cadastros) {
+    if (i.email === email && i.codigo == codigoVer) {
+      encontreiSenha = true;
+    }
+  }
+
+  respostaServidor(res, encontreiSenha, 200);
+});
+
 app.post("/efetuarCadastro", (req, res) => {
-  const { email, senhaUser, ConfirmaSenha, nomeUser, foneContato } = req.body;
+  const { email, senha, username, telefone }: CadastroInterface = req.body;
 
   // Validar e-mail
   const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   if (!emailValido.test(email)) {
-    return res.status(400).json({
-      mensagem: "E-mail inválido!"
-    });
+    return respostaServidor(res, "E-mail inválido!", 400);
   }
 
   // Validar senha
   const senhaValida = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
-  if (!senhaValida.test(senhaUser)) {
-    return res.status(400).json({
-      mensagem: "A senha deve ter no mínimo 8 caracteres, uma letra e um número."
-    });
+  if (!senhaValida.test(senha)) {
+    return respostaServidor(res, "A senha deve ter no mínimo 8 caracteres, uma letra e um número.", 400);
   }
 
-  // Confirmar senha
-  if (ConfirmaSenha !== senhaUser) {
-    return res.status(400).json({
-      mensagem: "As senhas não coincidem!"
-    });
-  }
-
-  return res.status(200).json({
-    mensagem: "Cadastro realizado com sucesso!"
-  });
+  return respostaServidor(res, "Cadastro realizado com sucesso!", 200);
 });
-
-// DELETE OU GET
-app.get("/istaUsers/:codigo", (req, res) => {
-  const codigo = req.params.codigo;
-  return res.status(200).json({ mensagem: "VOCÊ DIGITOU " + codigo });
-});
-
-app.get("/Exercicio/:codigo", (req, res) => {
-  const codigo = req.params.codigo;
-
-  if (codigo == null || codigo == "") {
-    return res.status(200).json(usuario);
-  }
-
-  let encontrei;
-  for (let buscar of usuario) {
-    if (buscar.codigo == Number(codigo)) { encontrei = buscar }
-  }
-  return res.status(200).json(encontrei);
-
-}
-);
-
-
 
 app.get("/", (req, res) => {
   res.send("Servidor Node.js com TypeScript funcionando!");
 });
+
