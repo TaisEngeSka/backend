@@ -1,20 +1,17 @@
 import { LoginInterface } from "../interfaces/Login";
-import { cadastros, senhaSalva, user } from "../data/Mock";
+import { cadastros } from "../data/Mock";
 import { CadastroInterface } from "../interfaces/Cadastro";
-import { EsqueciSenhaInterface } from "../interfaces/EsqueciSenha";
-
 
 export class AuthService {
+    login({ username, senha }: LoginInterface): boolean {
+        const usuarioEncontrado = cadastros.find(
+            (cadastro) => cadastro.username === username && cadastro.senha === senha
+        );
 
-    login({ username, senha }: LoginInterface) {
-        if (user != username || senhaSalva != senha) {
-            return "Credenciais inválidas!";
-        }
+        return usuarioEncontrado !== undefined;
+    }
 
-        return "Login bem-sucedido!"
-    };
-    cadastro({ nome, username, senha, email, telefone }: CadastroInterface) {
-        //Existe algum cadastro no mock com esta mesma informação?
+    cadastro({ nome, username, senha, email, telefone }: CadastroInterface): string {
         const usernameJaExiste = cadastros.some(
             (cadastro) => cadastro.username === username
         );
@@ -53,15 +50,11 @@ export class AuthService {
         return "Cadastro realizado com sucesso!";
     }
 
-    esqueciSenhaPassoI (email: string): EsqueciSenhaInterface [] {
+    esqueciSenhaPassoI(email: string): boolean {
+        const emailEncontrado = cadastros.some(
+            (cadastro) => cadastro.email === email
+        );
 
-        let encontreiEmail: true ;
-        for (let i of cadastros) {
-            if (i.email === email) {
-            }
-        }
-
-        return [];
+        return emailEncontrado;
     }
-
 }

@@ -6,8 +6,8 @@ export const user = "username";
 
 export const cadastros : CadastroInterface[] = [
     {
-        nome: "João",
-        username: "joao",
+        nome: "João",  // nome da pessoa
+        username: "joao", // nome do perfil 
         senha: "senha123",
         email: "joao@gmail.com",
         telefone: 11912345689,

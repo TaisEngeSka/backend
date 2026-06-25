@@ -6,35 +6,33 @@ import { respostaServidor } from "../util/RespostaServidor";
 import { EsqueciSenhaInterface } from "../interfaces/EsqueciSenha";
 
 export class AuthController {
-
     constructor(private authService = new AuthService()) { }
 
     async login(req: Request, res: Response) {
         const { username, senha }: LoginInterface = req.body;
 
-        if (username == null || username == "") {
-            return respostaServidor(res, "Credenciais inválidas!", 401);
-        }
-        if (senha == null || senha == "") {
+        if (!username || !senha) {
             return respostaServidor(res, "Credenciais inválidas!", 401);
         }
 
-        const respostaDoService = this.authService.login({ username, senha });
+        const loginValido = this.authService.login({ username, senha });
 
-        return respostaServidor(res, respostaDoService, 200);
-    };
+        if (!loginValido) {
+            return respostaServidor(res, "Credenciais inválidas!", 401);
+        }
+
+        return respostaServidor(res, "Login bem-sucedido!", 200);
+    }
 
     async cadastro(req: Request, res: Response) {
-        const { email, senha, username, telefone }: CadastroInterface = req.body;
+        const { nome, email, senha, username, telefone }: CadastroInterface = req.body;
 
-        // Validar e-mail
         const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailValido.test(email)) {
             return respostaServidor(res, "E-mail inválido!", 400);
         }
 
-        // Validar senha
         const senhaValida = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
         if (!senhaValida.test(senha)) {
@@ -45,7 +43,6 @@ export class AuthController {
             );
         }
 
-        // Validar username
         const usernameValido = /^[a-zA-Z0-9_]{3,20}$/;
 
         if (!usernameValido.test(username)) {
@@ -56,9 +53,7 @@ export class AuthController {
             );
         }
 
-        // Validar telefone como number
         const telefoneString = String(telefone);
-
         const telefoneValido = /^(\d{10}|\d{11})$/;
 
         if (!telefoneValido.test(telefoneString)) {
@@ -69,21 +64,40 @@ export class AuthController {
             );
         }
 
-        return respostaServidor(res, "Cadastro realizado com sucesso!", 200);
-    };
+        const respostaDoService = this.authService.cadastro({
+            nome,
+            email,
+            senha,
+            username,
+            telefone,
+        });
+
+        if (respostaDoService !== "Cadastro realizado com sucesso!") {
+            return respostaServidor(res, respostaDoService, 400);
+        }
+
+        return respostaServidor(res, respostaDoService, 200);
+    }
 
     async esqueciSenhaPassoI(req: Request, res: Response) {
-        const { email}: EsqueciSenhaInterface = req.body;
-        if (email == null || email == "") {
+        const { email }: EsqueciSenhaInterface = req.body;
+
+        if (!email) {
             return respostaServidor(res, "Credenciais inválidas!", 401);
-        } else {
-            // Validar e-mail
+        }
+
         const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (!emailValido.test(email)) {
             return respostaServidor(res, "E-mail inválido!", 400);
         }
-        }
-    }
 
+        const emailExiste = this.authService.esqueciSenhaPassoI(email);
+
+        if (!emailExiste) {
+            return respostaServidor(res, "E-mail não encontrado!", 404);
+        }
+
+        return respostaServidor(res, "E-mail válido!", 200);
+    }
 }
