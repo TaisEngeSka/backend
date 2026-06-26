@@ -11,7 +11,7 @@ export class AuthService {
         return usuarioEncontrado !== undefined;
     }
 
-    cadastro({ nome, username, senha, email, telefone }: CadastroInterface): string {
+    efetuarCadastro({ nome, username, senha, email, telefone }: CadastroInterface): string {
         const usernameJaExiste = cadastros.some(
             (cadastro) => cadastro.username === username
         );

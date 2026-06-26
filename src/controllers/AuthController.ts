@@ -24,7 +24,7 @@ export class AuthController {
         return respostaServidor(res, "Login bem-sucedido!", 200);
     }
 
-    async cadastro(req: Request, res: Response) {
+    async efetuarCadastro(req: Request, res: Response) {
         const { nome, email, senha, username, telefone }: CadastroInterface = req.body;
 
         const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -64,7 +64,7 @@ export class AuthController {
             );
         }
 
-        const respostaDoService = this.authService.cadastro({
+        const respostaDoService = this.authService.efetuarCadastro({
             nome,
             email,
             senha,
