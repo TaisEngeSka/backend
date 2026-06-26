@@ -1,20 +1,65 @@
-export const usuario = [
-    { codigo: 1, 
-    nomeUsuario: "João", 
-    email: "joao@example.com", 
-    senha: "senha123" },
+import { CadastroInterface } from "../interfaces/Cadastro";
+import { ProdutosInterface } from "../interfaces/ProdutosInterface";
 
-    { codigo: 5, 
-    nomeUsuario: "Maria", 
-    email: "maria@example.com", 
-    senha: "senha456" },
-
-    { codigo: 3, 
-    nomeUsuario: "Pedro", 
-    email: "pedro@example.com", 
-    senha: "senha789" }
-];
-
-export const senha = "password";
+export const senhaSalva = "password";
 export const user = "username";
 
+export const cadastros : CadastroInterface[] = [
+    {
+        nome: "João",  // nome da pessoa
+        username: "joao", // nome do perfil 
+        senha: "senha123",
+        email: "joao@gmail.com",
+        telefone: 11912345689,
+    },
+    {
+        nome: "Ana",
+        username: "ana",
+        senha: "Senha456",
+        email: "ana@gmail.com",
+        telefone: 11912345678
+    },
+    {
+        nome: "Carlos",
+        username: "carlos",
+        senha: "Senha789",
+        email: "carlos@gmail.com",
+        telefone: 11912345678
+    },
+    {
+        nome: "Maria",
+        username: "maria",
+        senha: "Senha012",
+        email: "maria@gmail.com",
+        telefone: 11912345678
+    },
+    {
+        nome: "Pedro",
+        username: "pedro",
+        senha: "Senha345",
+        email: "pedro@gmail.com",
+        telefone: 11912345678
+    }
+];
+export const produtos: ProdutosInterface[] = [
+    {
+        descricao:"ração para cachorro",
+        valor: 15.00,
+    },
+    {
+        descricao: "ração para gato",
+        valor: 15.00,
+    },
+    {
+        descricao:"ração para passarinho",
+        valor: 10.00,
+    },
+    {
+        descricao: "ração para peixe",
+        valor: 15.00,
+    },
+    {
+        descricao: "ASDASDASDASD",
+        valor: 15.00,
+    },
+]

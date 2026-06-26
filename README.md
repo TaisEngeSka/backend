@@ -10,6 +10,31 @@ Esse é um site de um petshop, com o intuito de ter diversas funcionalidades, co
 ## ORGANIZAÇÃO DA PASTA
 
 ### COMO EXECUTAR
-``` bash
-COMANDO
-``` 
+
+### FUNCAO PARA ENCONTRAR ALGO
+```bash
+export const senhaSalva = "password";
+export const user = "username";
+
+const repetir = [1, 2, 3, 4];
+const front = 1;
+
+let existe = false;
+for (let i = 0; i < 4; i++) {
+    if (repetir[i] === front) {
+        existe = true
+    }
+}
+
+const front2 = "alexandre@gmail.com";
+const front3 = 1;
+
+let encontreiSenha = "";
+for (let i of usuario) {
+    if (i.email === front2 && i.codigo == front3) {
+        encontreiSenha = i.senha;
+    }
+}
+
+respostaServidor(res, encontreiSenha, 200);
+```
