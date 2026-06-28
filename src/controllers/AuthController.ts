@@ -28,6 +28,10 @@ export class AuthController {
     const { nome, email, senha, username, telefone }: CadastroInterface =
       req.body;
 
+    if (!nome || !email || !senha || !username || !telefone) {
+      return respostaServidor(res, "Todos os campos são obrigatórios!", 400);
+    }
+
     const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailValido.test(email)) {

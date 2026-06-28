@@ -22,7 +22,9 @@ export class ProdutoService {
         return [encontreiProduto];
     }
 
-    cadastrarProduto(parametros: ProdutosInterface) {
-        return produtos.push(parametros);
+    cadastrarProduto(produto: ProdutosInterface): string {
+        produtos.push(produto);
+
+        return "Produto cadastrado com sucesso!";
     }
 }
