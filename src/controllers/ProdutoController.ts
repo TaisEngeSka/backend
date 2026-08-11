@@ -36,6 +36,7 @@ export class ProdutoController {
     }
 
     const dados: ProdutosInterface = {
+      nomeImg: String(req.body.nomeImg) || "",
       descricao: String(descricao),
       valor: Number(valor),
     };
