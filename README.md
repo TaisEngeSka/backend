@@ -37,4 +37,11 @@ for (let i of usuario) {
 }
 
 respostaServidor(res, encontreiSenha, 200);
+
+cada computadotr 
+--> install dotenv
+
+arquivo .env fora do src
+PORTA=8080
+SAENHA_JWT=SENHA_SUPER_SECRETA
 ```

@@ -1,16 +1,24 @@
 import { LoginInterface } from "../interfaces/Login";
 import { cadastros } from "../data/Mock";
 import { CadastroInterface } from "../interfaces/Cadastro";
+import { gerarToken } from "../server";
 
 export class AuthService {
   private codigoVerificacao = "123456";
 
-  login({ username, senha }: LoginInterface): boolean {
+  login({ username, senha }: LoginInterface) {
     const usuarioEncontrado = cadastros.find(
       (cadastro) => cadastro.username === username && cadastro.senha === senha
     );
 
-    return usuarioEncontrado !== undefined;
+    if (usuarioEncontrado) {
+
+      const token = gerarToken(1);
+      return { mensagem: "Login realizado com sucesso!", token: token };
+    }
+
+    return { mensagem: "usuario nao encontrado!" };
+
   }
 
   efetuarCadastro({
