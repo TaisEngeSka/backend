@@ -7,19 +7,19 @@ import jwt from "jsonwebtoken";
 
 const app = express();
 const PORT = process.env.PORTA ?? 3000;
-const SENHA_JWT = process.env.SENHA_JWT;
+const SENHA_JWT = process.env.SENHA_JWT  || "";
 
-export function gerarToken(codigoUsuario: number) {
-  return jwt.sign( // Header.Playload.Ass
+export function gerarToken(codigoUsuario: number): string {
+  return jwt.sign(
     {
       usuario: codigoUsuario,
       email: "gsdugcugdu"
-    }, //  Playload
-    SENHA_JWT, // header
+    },
+    SENHA_JWT,
     {
-      expiresIn: "1h" // tempo de expiração do token
-    } // Ass 
-  )
+      expiresIn: "1h"
+    }
+  );
 }
 
 export function validarToken(token: string) {
@@ -27,7 +27,7 @@ export function validarToken(token: string) {
 
   try {
 
-    const dados = jwt.verify(token, SENHA_JWT);
+    const dados:any = jwt.verify(token, SENHA_JWT);
     retorno = dados.usuario > 0;
 
   } catch (error) {

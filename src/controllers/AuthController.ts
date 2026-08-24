@@ -17,11 +17,7 @@ export class AuthController {
 
     const loginValido = this.authService.login({ username, senha });
 
-    if (!loginValido) {
-      return respostaServidor(res, "Credenciais inválidas!", 401);
-    }
-
-    return respostaServidor(res, "Login bem-sucedido!", 200);
+    return respostaServidor(res, loginValido, 200);
   }
 
   async efetuarCadastro(req: Request, res: Response) {
@@ -44,7 +40,7 @@ export class AuthController {
       return respostaServidor(
         res,
         "A senha deve ter no mínimo 8 caracteres, uma letra e um número.",
-        400
+        400,
       );
     }
 
@@ -54,7 +50,7 @@ export class AuthController {
       return respostaServidor(
         res,
         "O username deve ter entre 3 e 20 caracteres e conter apenas letras, números ou underline.",
-        400
+        400,
       );
     }
 
@@ -65,7 +61,7 @@ export class AuthController {
       return respostaServidor(
         res,
         "Telefone inválido! Informe apenas números, com DDD. Exemplo: 11912345678.",
-        400
+        400,
       );
     }
 
@@ -115,7 +111,7 @@ export class AuthController {
 
     const codigoValido = this.authService.esqueciSenhaPassoII(
       email,
-      String(codigoVer)
+      String(codigoVer),
     );
 
     if (!codigoValido) {
@@ -138,14 +134,14 @@ export class AuthController {
       return respostaServidor(
         res,
         "A senha deve ter no mínimo 8 caracteres, uma letra e um número.",
-        400
+        400,
       );
     }
 
     const senhaAlterada = this.authService.esqueciSenhaPassoIII(
       email,
       String(codigoVer),
-      senha
+      senha,
     );
 
     if (!senhaAlterada) {

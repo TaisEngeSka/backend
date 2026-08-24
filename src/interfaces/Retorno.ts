@@ -1,3 +1,6 @@
-export interface RespostaServidorInterface {
+export interface RetornoInterface {
+  mensagem: {
     mensagem: string;
+    token: string;
+  };
 }
