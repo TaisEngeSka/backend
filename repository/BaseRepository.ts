@@ -15,7 +15,7 @@ class BaseRepository<T extends IEntidade> {
 
   async buscarPorId(id: number): Promise<T | null> {
     const res = await bancoDados.query<T>(
-      `SELECT * FROM ${this.tabela} WHERE id = $1`,
+      `SELECT * FROM ${this.tabela} WHERE id_ +${this.tabela} = $1`,
       [id]
     );
     return res.rows[0] ?? null;
@@ -28,7 +28,7 @@ class BaseRepository<T extends IEntidade> {
 
   async deletar(id: number): Promise<boolean> {
     const res = await bancoDados.query(
-      `DELETE FROM ${this.tabela} WHERE id = $1`, [id]
+      `DELETE FROM ${this.tabela} WHERE id_ +${this.tabela} = $1`, [id]
     );
     return (res.rowCount ?? 0) > 0; // true se deletou algo
   }
