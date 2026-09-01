@@ -1,7 +1,14 @@
+import { bancoDados } from "../src/database/pool";
+
 // ── Contrato mínimo de uma entidade do banco ─────────
 export interface IEntidade {
   id: number;
 }
+
+//  iplementar cadastro no banco de dados usando a classe BaseRepository
+//insert into tb_usuario (tx_nome, tx_username, tx_senha, tx_email, nr_telefone)
+//values ('Silva Pedro Cardoso', 'CardosoPedro', 'SilvaPedro567', 'CardosoPedro@gmail.com', 49991891043)
+
 
 // ── Classe genérica com constraint ──────────────────
 // "T extends IEntidade" = T pode ser qualquer tipo,

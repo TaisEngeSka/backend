@@ -2,25 +2,31 @@ import { LoginInterface } from "../interfaces/Login";
 import { cadastros } from "../data/Mock";
 import { CadastroInterface } from "../interfaces/Cadastro";
 import { gerarToken } from "../server";
+import { buscarUsuarioNoBD } from "../repository/AuthRepository";
+import { RetornoLoginInterface } from "../interfaces/RetornoLogin";
 
 export class AuthService {
   private codigoVerificacao = "123456";
 
-  login({ username, senha }: LoginInterface) {
-    const usuarioEncontrado = cadastros.find(
-      (cadastro) => cadastro.username === username && cadastro.senha === senha
-    );
+  async login({ username, senha }: LoginInterface) {
 
-    if (usuarioEncontrado) {
+    const retorno: RetornoLoginInterface | null = await buscarUsuarioNoBD(username, senha);
 
-      const id_usuário = 10;
-      const token = gerarToken(id_usuário);
-      return { mensagem: "Login realizado com sucesso!", token: token };
+    if (retorno !== null) {
+
+      const token = gerarToken(retorno.id);
+
+      return {
+        mensagem: "Login realizado com sucesso!",
+        token: token
+      };
     }
-
-    return { mensagem: "usuario nao encontrado!" };
-
+    return { mensagem: "Usuário não encontrado!" };
   }
+
+
+  // atualizar o cadastro implementando a função cadastroUserNoBancoDados
+  // do AuthRepository.ts
 
   efetuarCadastro({
     nome,
@@ -54,7 +60,6 @@ export class AuthService {
     }
 
     const novoCadastro: CadastroInterface = {
-      codigo: cadastros.length + 1,
       nome,
       username,
       senha,
@@ -66,6 +71,10 @@ export class AuthService {
 
     return "Cadastro realizado com sucesso!";
   }
+
+
+
+
 
   esqueciSenhaPassoI(email: string): boolean {
     const emailEncontrado = cadastros.some(
