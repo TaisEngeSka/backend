@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/AuthController";
 
+// funções e metodos que serão chamados quando a rota for acessada
+
 const router = Router();
 const authController = new AuthController();
 

@@ -5,15 +5,11 @@ export interface IEntidade {
   id: number;
 }
 
-//  iplementar cadastro no banco de dados usando a classe BaseRepository
-//insert into tb_usuario (tx_nome, tx_username, tx_senha, tx_email, nr_telefone)
-//values ('Silva Pedro Cardoso', 'CardosoPedro', 'SilvaPedro567', 'CardosoPedro@gmail.com', 49991891043)
-
-
 // ── Classe genérica com constraint ──────────────────
 // "T extends IEntidade" = T pode ser qualquer tipo,
 // desde que tenha pelo menos a propriedade "id: number"
-class BaseRepository<T extends IEntidade> {
+
+export class BaseRepository<T extends IEntidade> {
   private tabela: string;
 
   constructor(tabela: string) {

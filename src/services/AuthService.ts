@@ -1,8 +1,8 @@
 import { LoginInterface } from "../interfaces/Login";
 import { cadastros } from "../data/Mock";
 import { CadastroInterface } from "../interfaces/Cadastro";
-import { gerarToken } from "../server";
-import { buscarUsuarioNoBD } from "../repository/AuthRepository";
+import { gerarToken } from "../jwt/jwt";
+import { buscarUsuarioNoBD, cadastroUserNoBancoDados, vericarSeJaExiste } from "../repository/AuthRepository";
 import { RetornoLoginInterface } from "../interfaces/RetornoLogin";
 
 export class AuthService {
@@ -24,57 +24,25 @@ export class AuthService {
     return { mensagem: "Usuário não encontrado!" };
   }
 
-
   // atualizar o cadastro implementando a função cadastroUserNoBancoDados
   // do AuthRepository.ts
 
-  efetuarCadastro({
+  async efetuarCadastro({
     nome,
     username,
     senha,
     email,
     telefone,
-  }: CadastroInterface): string {
-    const usernameJaExiste = cadastros.some(
-      (cadastro) => cadastro.username === username
-    );
+  }: CadastroInterface): Promise<string> {
 
-    if (usernameJaExiste) {
-      return "Username já cadastrado!";
+    const  usuarioJaExiste =  await vericarSeJaExiste(username, email, telefone);
+    if(usuarioJaExiste) {
+      return "Usuário já cadastrado!";
     }
 
-    const emailJaExiste = cadastros.some(
-      (cadastro) => cadastro.email === email
-    );
-
-    if (emailJaExiste) {
-      return "E-mail já cadastrado!";
-    }
-
-    const telefoneJaExiste = cadastros.some(
-      (cadastro) => cadastro.telefone === telefone
-    );
-
-    if (telefoneJaExiste) {
-      return "Telefone já cadastrado!";
-    }
-
-    const novoCadastro: CadastroInterface = {
-      nome,
-      username,
-      senha,
-      email,
-      telefone,
-    };
-
-    cadastros.push(novoCadastro);
-
+    await cadastroUserNoBancoDados(nome, username, senha, email, telefone);
     return "Cadastro realizado com sucesso!";
   }
-
-
-
-
 
   esqueciSenhaPassoI(email: string): boolean {
     const emailEncontrado = cadastros.some(

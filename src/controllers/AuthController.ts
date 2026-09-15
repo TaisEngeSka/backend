@@ -6,7 +6,7 @@ import { respostaServidor } from "../util/RespostaServidor";
 import { EsqueciSenhaInterface } from "../interfaces/EsqueciSenha";
 
 export class AuthController {
-  constructor(private authService = new AuthService()) {}
+  constructor(private authService = new AuthService()) { }
 
   async login(req: Request, res: Response) {
     const { username, senha }: LoginInterface = req.body;
@@ -72,10 +72,6 @@ export class AuthController {
       username,
       telefone,
     });
-
-    if (respostaDoService !== "Cadastro realizado com sucesso!") {
-      return respostaServidor(res, respostaDoService, 400);
-    }
 
     return respostaServidor(res, respostaDoService, 200);
   }

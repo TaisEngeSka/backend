@@ -3,11 +3,7 @@ import { CadastroInterface } from "../interfaces/Cadastro";
 import { LoginInterface } from "../interfaces/Login";
 import { RetornoLoginInterface } from "../interfaces/RetornoLogin";
 
-export async function buscarUsuario() {
-    const { rows } = await bancoDados.query('select id_usuario from tb_usuario;');
-    return rows;
-}
-
+// função para fazer o login do usuário, verificando se o username e senha existem no banco de dados
 export async function buscarUsuarioNoBD(
     username: string,
     senha: string
@@ -25,6 +21,7 @@ export async function buscarUsuarioNoBD(
 
 }
 
+// cadastro de um novo user no banco de dados, verificando se o username, email e telefone já existem
 export async function cadastroUserNoBancoDados(
     nome: string,
     username: string,
@@ -41,6 +38,24 @@ export async function cadastroUserNoBancoDados(
         return rows[0];
     } else {
         return null;
-    } 
+    }
 }
 
+// função de verificar se o usuário existe no banco de dados, retornando true ou false
+export async function vericarSeJaExiste(
+    username: string, 
+    email: string, 
+    telefone: number):Promise<boolean> {
+
+    const { rows } = await bancoDados.query(`
+            SELECT exists(
+                 select 1 
+                 FROM tb_usuario
+                 WHERE 
+                    tx_username = $1
+                    OR tx_email = $2 
+                    OR nr_telefone = $3
+                );`,
+        [username, email, telefone]);
+    return rows.length > 0;
+}
