@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import autenticacao from "./routes/AuthRoute";
 import ProdutoRoutes from "./routes/ProdutoRoutes";
+import UsuarioRoutes from "./routes/UsuarioRoutes";
 
 // valida quem chama e quais métodos podem chamar a API, e quais headers podem ser enviados 
 
@@ -19,6 +20,7 @@ app.use(
 app.use(express.json());
 app.use("/produtos", ProdutoRoutes);
 app.use("/autenticacao", autenticacao);
+app.use("/usuario", UsuarioRoutes);
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
