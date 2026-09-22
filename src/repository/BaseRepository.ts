@@ -27,3 +27,6 @@ export abstract class BaseRepository<T> implements IRepository<T> {
   }
 
 }
+//async buscarUsuario(): Promise<Usuario> {
+   // consulta ao banco...}
+// Essa função é assíncrona e vai retornar um Usuario no futuro
